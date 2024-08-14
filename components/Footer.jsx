@@ -15,7 +15,7 @@ export default function Footer() {
           <div className="flex flex-wrap justify-center md:justify-start mb-4 md:mb-0">
             <ul className="flex space-x-4">
               <li>
-                <Link href="/properties">Properties(test)</Link>
+                <Link href="/properties">Properties</Link>
               </li>
               <li>
                 <Link href="/">Terms of Service</Link>
