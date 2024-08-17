@@ -1,7 +1,9 @@
-import properties from "@/properties.json";
 import PropertyCard from "@/components/PropertyCard";
-
-export default function AddPropertyPage() {
+import connectDB from "@/config/database";
+import Property from "@/models/Property";
+export default async function AddPropertyPage() {
+  await connectDB();
+  const properties = await Property.find({}).lean();
   return (
     <>
       <section className="px-4 py-6">
