@@ -29,6 +29,7 @@ yarn-error.log*
 .env*.local
 .env
 _theme_files
+.idea
 
 # vercel
 .vercel
