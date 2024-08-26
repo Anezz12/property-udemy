@@ -1,14 +1,13 @@
 "use server";
 import connectDB from "@/config/database";
 import Property from "@/models/Property";
-import { getSession } from "@/utils/getSessionUser";
+import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import cloudinary from "@/config/cloudinary";
 async function addProperty(formData) {
   await connectDB();
-
-  const sessionUser = await getSession();
-
+  const sessionUser = await getSessionUser();
   if (!sessionUser || !sessionUser.userId) {
     throw new Error("You need to be logged in to add a property");
   }
@@ -16,13 +15,10 @@ async function addProperty(formData) {
 
   // Access all value from amenities and images
   const amenities = formData.getAll("amenities");
-  const images = formData
-    .getAll("images")
-    .filter((image) => image.name !== "")
-    .map((image) => image.name);
+  const images = formData.getAll("images").filter((image) => image.name !== "");
 
   const propertyData = {
-    Owner: userId,
+    owner: userId,
     type: formData.get("type"),
     name: formData.get("name"),
     description: formData.get("description"),
@@ -33,7 +29,7 @@ async function addProperty(formData) {
       zipcode: formData.get("location.zipcode"),
     },
     beds: formData.get("beds"),
-    baths: formData.get("baths"),
+    bath: formData.get("baths"),
     square_feet: formData.get("square_feet"),
     amenities,
     rates: {
@@ -46,9 +42,34 @@ async function addProperty(formData) {
       email: formData.get("seller_info.email"),
       phone: formData.get("seller_info.phone"),
     },
-    images,
   };
-  console.log(propertyData);
+
+  // Upload images to cloudinary
+  const imageUrls = [];
+  for (const imageFile of images) {
+    const imageBuffer = await imageFile.arrayBuffer();
+    const imageArray = new Uint8Array(imageBuffer);
+    const imageData = Buffer.from(imageArray);
+
+    // Convert to base64
+    const imageBase64 = imageData.toString("base64");
+
+    // Make request to cloudinary
+    const result = await cloudinary.uploader.upload(
+      `data:image/png;base64,${imageBase64}`,
+      {
+        folder: "property-udemy",
+      }
+    );
+    imageUrls.push(result.secure_url);
+  }
+  propertyData.images = imageUrls;
+
+  // console.log(propertyData);
+  const newProperty = new Property(propertyData);
+  await newProperty.save();
+  revalidatePath("/", "layout");
+  redirect(`/properties/${newProperty._id}`);
 }
 
 export default addProperty;
