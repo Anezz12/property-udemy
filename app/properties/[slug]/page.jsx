@@ -5,9 +5,20 @@ import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 import Propertyimages from "@/components/Propertyimages";
 import PropertyDetails from "@/components/PropertyDetails";
+import { convertToSerializedObject } from "@/utils/convertToObject";
 export default async function PropertyPage({ params }) {
   await connectDB();
-  const property = await Property.findById(params.slug).lean();
+  const propertyDoc = await Property.findById(params.slug).lean();
+  const property = convertToSerializedObject(propertyDoc);
+
+  if (!property) {
+    return (
+      <div className=" text-center text-2xl font-bold mt-10">
+        Property not found
+      </div>
+    );
+  }
+
   return (
     <>
       <PropertyHeaderImage image={property.images[0]} />
