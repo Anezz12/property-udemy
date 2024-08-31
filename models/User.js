@@ -4,13 +4,12 @@ const UserSchema = new Schema(
   {
     email: {
       type: String,
-      required: [true, "email is required"],
-      unique: [true, "email is already exists"],
+      unique: [true, "Email already exists"],
+      required: [true, "Email is required"],
     },
     username: {
       type: String,
-      required: [true, "username is required"],
-      unique: [true, "username is already exists"],
+      required: [true, "Username is required"],
     },
     image: {
       type: String,
@@ -18,7 +17,7 @@ const UserSchema = new Schema(
     bookmarks: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Property",
+        ref: "properties",
       },
     ],
   },

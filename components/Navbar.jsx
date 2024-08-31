@@ -62,7 +62,10 @@ export default function Navbar() {
               <Link className="flex flex-shrink-0 items-center" href="/">
                 <Image className="h-10 w-auto" src={logo} alt="PropertyPulse" />
 
-                <span className="hidden md:block text-white text-2xl font-bold ml-2">
+                <span
+                  onClick={() => setIsProfileMenuOpen(false)}
+                  className="hidden md:block text-white text-2xl font-bold ml-2"
+                >
                   PropertyPulse
                 </span>
               </Link>
@@ -74,6 +77,7 @@ export default function Navbar() {
                     className={`${
                       pathname === "/" ? "bg-black" : ""
                     } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                    onClick={() => setIsProfileMenuOpen(false)}
                   >
                     Home
                   </Link>
@@ -91,6 +95,7 @@ export default function Navbar() {
                       className={`${
                         pathname === "/properties/add" ? "bg-black" : ""
                       } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                      onClick={() => setIsProfileMenuOpen(false)}
                     >
                       Add Property
                     </Link>
