@@ -6,6 +6,7 @@ import { getSessionUser } from "@/utils/getSessionUser";
 import profileDefault from "@/assets/images/profile.png";
 import ProfileProperties from "@/components/ProfileProperties";
 import { convertToSerializedObject } from "@/utils/convertToObject";
+
 export default async function Profile() {
   await connectDB();
 
@@ -17,7 +18,7 @@ export default async function Profile() {
     throw new Error("You need to be logged in to view this page");
   }
 
-  const propertiesDocs = await Property.find({ user: userId }).lean();
+  const propertiesDocs = await Property.find({ owner: userId }).lean();
   const properties = propertiesDocs.map(convertToSerializedObject);
   //   console.log(properties);
 

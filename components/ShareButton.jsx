@@ -1,4 +1,5 @@
 "use client";
+
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -9,8 +10,10 @@ import {
   TwitterIcon,
   EmailIcon,
 } from "react-share";
+
 export default function ShareButton({ property }) {
   const shareUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/properties/${property._id}`;
+
   return (
     <>
       <h3 className="text-xl font-bold text-center pt-2">
@@ -20,29 +23,27 @@ export default function ShareButton({ property }) {
         <FacebookShareButton
           url={shareUrl}
           quote={property.name}
-          h
-          hashtag={[`${property.type.replace(/\s/g, "")}forRent`]}
+          hashtag={`#${property.type.replace(/\s/g, "")}forRent`}
         >
           <FacebookIcon size={40} round={true} />
         </FacebookShareButton>
-
         <TwitterShareButton
           url={shareUrl}
           title={property.name}
-          hashtag={[`${property.type.replace(/\s/g, "")}forRent`]}
+          hashtags={[`${property.type.replace(/\s/g, "")}forRent`]}
         >
           <TwitterIcon size={40} round={true} />
         </TwitterShareButton>
         <WhatsappShareButton
           url={shareUrl}
-          subject={property.name}
-          separator="::"
+          title={property.name}
+          separator=": "
         >
           <WhatsappIcon size={40} round={true} />
         </WhatsappShareButton>
         <EmailShareButton
           url={shareUrl}
-          title={property.name}
+          subject={property.name}
           body={`Check out this property I found on ${shareUrl}`}
         >
           <EmailIcon size={40} round={true} />

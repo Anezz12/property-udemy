@@ -2,11 +2,14 @@
 import Image from "next/image";
 import logo from "@/assets/images/logo-white.png";
 import profileDefault from "@/assets/images/profile.png";
+import UnreadMessageCount from "./UnreadMessage";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
+import { set } from "mongoose";
+
 export default function Navbar() {
   const { data: session } = useSession();
   const profileImage = session?.user?.image || profileDefault;
@@ -21,6 +24,10 @@ export default function Navbar() {
       setProviders(res);
     };
     setAuthProviders();
+
+    window.addEventListener("resize", () => {
+      setIsMobileMenuOpen(false);
+    });
   }, []);
 
   return (
@@ -148,8 +155,7 @@ export default function Navbar() {
                     </svg>
                   </button>
                   <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
-                    2
-                    {/* <!-- Replace with the actual number of notifications --> */}
+                    <UnreadMessageCount />
                   </span>
                 </Link>
                 {/* <!-- Profile dropdown button --> */}
@@ -212,7 +218,7 @@ export default function Navbar() {
                         id="user-menu-item-2"
                         onClick={() => {
                           setIsProfileMenuOpen(false);
-                          signOut();
+                          signOut({ callbackUrl: "/" });
                         }}
                       >
                         Sign Out
@@ -256,10 +262,21 @@ export default function Navbar() {
                 </Link>
               )}
               {!session && (
-                <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5">
-                  <i className="fa-brands fa-google mr-2"></i>
-                  <span>Login or Register</span>
-                </button>
+                <div className="block md:ml-6">
+                  <div className="flex items-center">
+                    {providers &&
+                      Object.values(providers).map((provider) => (
+                        <button
+                          key={provider.name}
+                          onClick={() => signIn(provider.id)}
+                          className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-3"
+                        >
+                          <FaGoogle className="text-white mr-2" />
+                          <span>Login or Register</span>
+                        </button>
+                      ))}
+                  </div>
+                </div>
               )}
             </div>
           </div>
