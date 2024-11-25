@@ -1,7 +1,7 @@
-import PropertyCard from "./PropertyCard";
-import Link from "next/link";
-import connectDB from "@/config/database";
-import Property from "@/models/Property";
+import PropertyCard from './PropertyCard';
+import Link from 'next/link';
+import connectDB from '@/config/database';
+import Property from '@/models/Property';
 export default async function HomePropertiesPage() {
   await connectDB();
   const recentProperties = await Property.find({})

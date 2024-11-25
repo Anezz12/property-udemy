@@ -1,7 +1,7 @@
-"use client";
-import getUnreadMessageCount from "@/app/actions/getUnreadMessage";
-import { useSession } from "next-auth/react";
-import { createContext, useContext, useState, useEffect } from "react";
+'use client';
+import getUnreadMessageCount from '@/app/actions/getUnreadMessage';
+import { useSession } from 'next-auth/react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 //Create context
 const GlobalContext = createContext();

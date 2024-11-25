@@ -1,14 +1,13 @@
-"use client";
-import Image from "next/image";
-import logo from "@/assets/images/logo-white.png";
-import profileDefault from "@/assets/images/profile.png";
-import UnreadMessageCount from "./UnreadMessage";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { FaGoogle } from "react-icons/fa";
-import { useState, useEffect } from "react";
-import { signIn, signOut, useSession, getProviders } from "next-auth/react";
-import { set } from "mongoose";
+'use client';
+import Image from 'next/image';
+import logo from '@/assets/images/logo-white.png';
+import profileDefault from '@/assets/images/profile.png';
+import { FaGoogle, FaGithub, FaFacebook } from 'react-icons/fa';
+import UnreadMessageCount from './UnreadMessage';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -16,7 +15,7 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [providers, setProviders] = useState(null);
-
+  const [isProviderMenuOpen, setIsProviderMenuOpen] = useState(false);
   const pathname = usePathname();
   useEffect(() => {
     const setAuthProviders = async () => {
@@ -25,10 +24,16 @@ export default function Navbar() {
     };
     setAuthProviders();
 
-    window.addEventListener("resize", () => {
+    window.addEventListener('resize', () => {
       setIsMobileMenuOpen(false);
     });
   }, []);
+
+  const providerIcons = {
+    google: FaGoogle,
+    github: FaGithub,
+    facebook: FaFacebook,
+  };
 
   return (
     <>
@@ -82,7 +87,7 @@ export default function Navbar() {
                   <Link
                     href="/"
                     className={`${
-                      pathname === "/" ? "bg-black" : ""
+                      pathname === '/' ? 'bg-black' : ''
                     } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                     onClick={() => setIsProfileMenuOpen(false)}
                   >
@@ -91,7 +96,7 @@ export default function Navbar() {
                   <Link
                     href="/properties"
                     className={`${
-                      pathname === "/properties" ? "bg-black" : ""
+                      pathname === '/properties' ? 'bg-black' : ''
                     } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                   >
                     Properties
@@ -100,7 +105,7 @@ export default function Navbar() {
                     <Link
                       href="/properties/add"
                       className={`${
-                        pathname === "/properties/add" ? "bg-black" : ""
+                        pathname === '/properties/add' ? 'bg-black' : ''
                       } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
                       onClick={() => setIsProfileMenuOpen(false)}
                     >
@@ -115,17 +120,31 @@ export default function Navbar() {
             {!session && (
               <div className="hidden md:block md:ml-6">
                 <div className="flex items-center">
-                  {providers &&
-                    Object.values(providers).map((provider, index) => (
-                      <button
-                        key={index}
-                        onClick={() => signIn(provider.id)}
-                        className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
-                      >
-                        <FaGoogle className="text-white mr-2" />
-                        <span>Login or Register</span>
-                      </button>
-                    ))}
+                  <button
+                    onClick={() => setIsProviderMenuOpen(!isProviderMenuOpen)}
+                    className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+                  >
+                    Login or Register
+                  </button>
+                  {isProviderMenuOpen && (
+                    <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
+                      {providers &&
+                        Object.values(providers).map((provider) => {
+                          const ProviderIcon =
+                            providerIcons[provider.id] || FaGoogle;
+                          return (
+                            <button
+                              key={provider.name}
+                              onClick={() => signIn(provider.id)}
+                              className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full"
+                            >
+                              <ProviderIcon className="mr-2" />
+                              <span>Sign in with {provider.name}</span>
+                            </button>
+                          );
+                        })}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -218,7 +237,7 @@ export default function Navbar() {
                         id="user-menu-item-2"
                         onClick={() => {
                           setIsProfileMenuOpen(false);
-                          signOut({ callbackUrl: "/" });
+                          signOut({ callbackUrl: '/' });
                         }}
                       >
                         Sign Out
@@ -238,7 +257,7 @@ export default function Navbar() {
               <Link
                 href="/"
                 className={`${
-                  pathname === "/" ? "bg-black" : ""
+                  pathname === '/' ? 'bg-black' : ''
                 } text-white block rounded-md px-3 py-2 text-base font-medium`}
               >
                 Home
@@ -246,7 +265,7 @@ export default function Navbar() {
               <Link
                 href="/properties"
                 className={`${
-                  pathname === "/properties" ? "bg-black" : ""
+                  pathname === '/properties' ? 'bg-black' : ''
                 } text-white block rounded-md px-3 py-2 text-base font-medium`}
               >
                 Properties
@@ -255,7 +274,7 @@ export default function Navbar() {
                 <Link
                   href="/properties/add"
                   className={`${
-                    pathname === "/properties/add" ? "bg-black" : ""
+                    pathname === '/properties/add' ? 'bg-black' : ''
                   } text-white block rounded-md px-3 py-2 text-base font-medium`}
                 >
                   Add Property
@@ -265,16 +284,20 @@ export default function Navbar() {
                 <div className="block md:ml-6">
                   <div className="flex items-center">
                     {providers &&
-                      Object.values(providers).map((provider) => (
-                        <button
-                          key={provider.name}
-                          onClick={() => signIn(provider.id)}
-                          className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-3"
-                        >
-                          <FaGoogle className="text-white mr-2" />
-                          <span>Login or Register</span>
-                        </button>
-                      ))}
+                      Object.values(providers).map((provider) => {
+                        const ProviderIcon =
+                          providerIcons[provider.id] || FaGoogle;
+                        return (
+                          <button
+                            key={provider.name}
+                            onClick={() => signIn(provider.id)}
+                            className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-1 w-full"
+                          >
+                            <ProviderIcon className="text-white mr-2" />
+                            <span>Sign in with {provider.name}</span>
+                          </button>
+                        );
+                      })}
                   </div>
                 </div>
               )}

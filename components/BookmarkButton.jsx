@@ -1,10 +1,10 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { toast } from "react-toastify";
-import { FaBookmark } from "react-icons/fa";
-import checkBookmarkStatus from "@/app/actions/checkBookmarkStatus";
-import bookmarkProperty from "@/app/actions/bookmarkProperty";
+'use client';
+import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { toast } from 'react-toastify';
+import { FaBookmark } from 'react-icons/fa';
+import checkBookmarkStatus from '@/app/actions/checkBookmarkStatus';
+import bookmarkProperty from '@/app/actions/bookmarkProperty';
 
 const BookmarkButton = ({ property }) => {
   const { data: session } = useSession();
@@ -30,7 +30,7 @@ const BookmarkButton = ({ property }) => {
 
   const handleClick = async () => {
     if (!userId) {
-      toast.error("You need to sign in to bookmark a property");
+      toast.error('You need to sign in to bookmark a property');
       return;
     }
 

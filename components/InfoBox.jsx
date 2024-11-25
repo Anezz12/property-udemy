@@ -1,9 +1,7 @@
-import { Children } from "react";
-
 export default function InfoBox({
   heading,
-  backgroundColor = "bg-gray-100",
-  textColor = "text-gray-800",
+  backgroundColor = 'bg-gray-100',
+  textColor = 'text-gray-800',
   children,
   buttonInfo,
 }) {

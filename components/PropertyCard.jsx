@@ -1,12 +1,12 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 import {
   FaBed,
   FaBath,
   FaRulerCombined,
   FaMoneyBill,
   FaMapMarker,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 
 const PropertyCard = ({ property }) => {
   const getRateDisplay = () => {
@@ -70,8 +70,8 @@ const PropertyCard = ({ property }) => {
           <div className="flex align-middle gap-2 mb-4 lg:mb-0">
             <FaMapMarker className="text-orange-700 mt-1" />
             <span className="text-orange-700">
-              {" "}
-              {property.location.city} {property.location.state}{" "}
+              {' '}
+              {property.location.city} {property.location.state}{' '}
             </span>
           </div>
           <Link

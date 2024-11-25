@@ -1,6 +1,7 @@
-import GoogleProvider from "next-auth/providers/google";
-import connectDB from "@/config/database";
-import User from "@/models/User";
+import GoogleProvider from 'next-auth/providers/google';
+import GitHubProvider from 'next-auth/providers/github';
+import connectDB from '@/config/database';
+import User from '@/models/User';
 
 export const authOptions = {
   providers: [
@@ -9,9 +10,20 @@ export const authOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code",
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
+        },
+      },
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      authorization: {
+        params: {
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
         },
       },
     }),
@@ -31,7 +43,7 @@ export const authOptions = {
         }
         return true;
       } catch (error) {
-        console.error("Error in signIn callback:", error);
+        console.error('Error in signIn callback:', error);
         return false;
       }
     },
@@ -44,7 +56,7 @@ export const authOptions = {
         }
         return session;
       } catch (error) {
-        console.error("Error in session callback:", error);
+        console.error('Error in session callback:', error);
         return session;
       }
     },

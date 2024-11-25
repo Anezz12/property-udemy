@@ -1,16 +1,16 @@
-"use client";
-import { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import deleteProperty from "@/app/actions/deleteProperty";
-import { toast } from "react-toastify";
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import deleteProperty from '@/app/actions/deleteProperty';
+import { toast } from 'react-toastify';
 
 export default function ProfilePage({ properties: initialProperties }) {
   const [properties, setProperties] = useState(initialProperties);
 
   const handleDeleteProperty = async (propertyId) => {
     const confirmed = window.confirm(
-      "Are you sure you want to delete this property?"
+      'Are you sure you want to delete this property?'
     );
     if (!confirmed) return;
 
@@ -20,7 +20,7 @@ export default function ProfilePage({ properties: initialProperties }) {
       (property) => property._id !== propertyId
     );
     setProperties(updatedProperties);
-    toast.success("Property deleted successfully");
+    toast.success('Property deleted successfully');
   };
   return properties.map((property) => (
     <div key={property._id} className="md:w-3/4 md:pl-4">

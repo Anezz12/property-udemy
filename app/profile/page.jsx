@@ -1,11 +1,10 @@
-import Link from "next/link";
-import Image from "next/image";
-import connectDB from "@/config/database";
-import Property from "@/models/Property";
-import { getSessionUser } from "@/utils/getSessionUser";
-import profileDefault from "@/assets/images/profile.png";
-import ProfileProperties from "@/components/ProfileProperties";
-import { convertToSerializedObject } from "@/utils/convertToObject";
+import Image from 'next/image';
+import connectDB from '@/config/database';
+import Property from '@/models/Property';
+import { getSessionUser } from '@/utils/getSessionUser';
+import profileDefault from '@/assets/images/profile.png';
+import ProfileProperties from '@/components/ProfileProperties';
+import { convertToSerializedObject } from '@/utils/convertToObject';
 
 export default async function Profile() {
   await connectDB();
@@ -15,7 +14,7 @@ export default async function Profile() {
   const { userId } = sessionUser;
 
   if (!userId) {
-    throw new Error("You need to be logged in to view this page");
+    throw new Error('You need to be logged in to view this page');
   }
 
   const propertiesDocs = await Property.find({ owner: userId }).lean();
@@ -40,11 +39,11 @@ export default async function Profile() {
               </div>
 
               <h2 className="text-2xl mb-4">
-                <span className="font-bold block">Name: </span>{" "}
+                <span className="font-bold block">Name: </span>{' '}
                 {sessionUser.user.name}
               </h2>
               <h2 className="text-2xl">
-                <span className="font-bold block">Email: </span>{" "}
+                <span className="font-bold block">Email: </span>{' '}
                 {sessionUser.user.email}
               </h2>
             </div>

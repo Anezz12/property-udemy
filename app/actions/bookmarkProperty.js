@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import connectDB from "@/config/database";
-import User from "@/models/User";
-import { getSessionUser } from "@/utils/getSessionUser";
-import { revalidatePath } from "next/cache";
+import connectDB from '@/config/database';
+import User from '@/models/User';
+import { getSessionUser } from '@/utils/getSessionUser';
+import { revalidatePath } from 'next/cache';
 
 async function bookmarkProperty(propertyId) {
   await connectDB();
@@ -11,7 +11,7 @@ async function bookmarkProperty(propertyId) {
   const sessionUser = await getSessionUser();
 
   if (!sessionUser || !sessionUser.userId) {
-    return { error: "User ID is required" };
+    return { error: 'User ID is required' };
   }
 
   const { userId } = sessionUser;
@@ -27,19 +27,19 @@ async function bookmarkProperty(propertyId) {
   if (isBookmarked) {
     // If already bookmarked, remove it
     user.bookmarks.pull(propertyId);
-    message = "Bookmark removed successfully";
+    message = 'Bookmark removed successfully';
     isBookmarked = false;
   } else {
     // If not bookmarked, add it
     user.bookmarks.push(propertyId);
-    message = "Bookmark added successfully";
+    message = 'Bookmark added successfully';
     isBookmarked = true;
   }
 
   await user.save();
 
   // revalidate the cache.
-  revalidatePath("/properties/saved", "page");
+  revalidatePath('/properties/saved', 'page');
 
   return { message, isBookmarked };
 }

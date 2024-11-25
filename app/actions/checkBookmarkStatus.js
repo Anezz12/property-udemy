@@ -1,13 +1,13 @@
-"use server";
-import connectDB from "@/config/database";
-import User from "@/models/User";
-import { getSessionUser } from "@/utils/getSessionUser";
+'use server';
+import connectDB from '@/config/database';
+import User from '@/models/User';
+import { getSessionUser } from '@/utils/getSessionUser';
 
 export default async function checkBookmarkStatus(propertyId) {
   await connectDB();
   const sessionUser = await getSessionUser();
   if (!sessionUser || !sessionUser.userId) {
-    return { error: "User ID is required" };
+    return { error: 'User ID is required' };
   }
   const { userId } = sessionUser;
 

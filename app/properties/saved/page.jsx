@@ -1,8 +1,8 @@
-import PropertyCard from "@/components/PropertyCard";
-import connectDB from "@/config/database";
-import User from "@/models/User";
-import Property from "@/models/Property"; // Add this line
-import { getSessionUser } from "@/utils/getSessionUser";
+import PropertyCard from '@/components/PropertyCard';
+import connectDB from '@/config/database';
+import User from '@/models/User';
+import Property from '@/models/Property'; // Add this line
+import { getSessionUser } from '@/utils/getSessionUser';
 
 const SavedPropertiesPage = async () => {
   await connectDB(); // Add this line
@@ -10,7 +10,7 @@ const SavedPropertiesPage = async () => {
   const { userId } = await getSessionUser();
 
   const { bookmarks } = await User.findById(userId).populate({
-    path: "bookmarks",
+    path: 'bookmarks',
     model: Property, // Specify the model explicitly
   });
 
