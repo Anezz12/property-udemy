@@ -1,8 +1,33 @@
-import addProperty from "@/app/actions/addProperty";
+'use client';
+import { useState } from 'react';
+import { debounce } from 'lodash';
+import addProperty from '@/app/actions/addProperty';
 
 export default function PropertyAddForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  // Debounce the form submission to prevent multiple submissions
+  const debauncedAddProperty = debounce(async (e) => {
+    try {
+      setIsSubmitting(true);
+      await addProperty(e);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+      setIsDisabled(false);
+    }
+  }, 1000);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    await debauncedAddProperty(formData);
+  };
+
   return (
-    <form action={addProperty}>
+    <form onSubmit={handleSubmit}>
       <h2 className="text-3xl text-center font-semibold mb-6">Add Property</h2>
 
       <div className="mb-4">
@@ -394,10 +419,20 @@ export default function PropertyAddForm() {
 
       <div>
         <button
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
-          type="submit"
+          className={`relative bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline transition-colors duration-200 ${
+            isSubmitting || isDisabled ? 'opacity-75 cursor-not-allowed' : ''
+          }`}
+          disabled={isSubmitting || isDisabled}
         >
-          Add Property
+          <span className={isSubmitting ? 'opacity-0' : 'opacity-100'}>
+            {'Add Property'}
+          </span>
+
+          {isSubmitting && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            </div>
+          )}
         </button>
       </div>
     </form>
