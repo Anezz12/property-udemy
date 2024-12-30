@@ -1,11 +1,41 @@
-import PropertyEditPage from "@/components/PropertyEdit";
-import connectDB from "@/config/database";
-import Property from "@/models/Property";
-import { convertToSerializedObject } from "@/utils/convertToObject";
+import PropertyEditPage from '@/components/PropertyEdit';
+import { getSessionUser } from '@/utils/getSessionUser';
+import connectDB from '@/config/database';
+import Property from '@/models/Property';
+import { convertToSerializedObject } from '@/utils/convertToObject';
+import NotFound from '@/app/not-found';
+
 export default async function EditPage({ params }) {
   await connectDB();
 
-  const propertyDoc = await Property.findById(params.slug).lean();
+  const sessionUser = await getSessionUser();
+
+  const { userId } = sessionUser;
+
+  if (!userId) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  // const propertyDoc = await Property.findById(params.slug).lean();
+
+  const propertyDoc = await Property.findOne({
+    _id: params.slug,
+    owner: userId,
+  }).lean();
+
+  if (!propertyDoc) {
+    return (
+      <>
+        <NotFound />
+      </>
+    );
+  }
+
   const property = convertToSerializedObject(propertyDoc);
   if (!property) {
     <h1 className=" text-center text-2xl font-blood mt-10">
