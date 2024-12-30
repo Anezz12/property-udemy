@@ -1,29 +1,29 @@
-import Link from "next/link";
-import PropertyCard from "@/components/PropertyCard";
-import PropertySearchForm from "@/components/PropertySearchForm";
-import connectDB from "@/config/database";
-import Property from "@/models/Property";
-import { convertToSerializedObject } from "@/utils/convertToObject";
-import { FaArrowAltCircleLeft } from "react-icons/fa";
+import Link from 'next/link';
+import PropertyCard from '@/components/PropertyCard';
+import PropertySearchForm from '@/components/PropertySearchForm';
+import connectDB from '@/config/database';
+import Property from '@/models/Property';
+import { convertToSerializedObject } from '@/utils/convertToObject';
+import { FaArrowAltCircleLeft } from 'react-icons/fa';
 export default async function SearchResultsPage({
   searchParams: { location, propertyType },
 }) {
   await connectDB();
 
-  const locationPattern = new RegExp(location, "i");
+  const locationPattern = new RegExp(location, 'i');
 
   let query = {
     $or: [
       { name: locationPattern },
       { description: locationPattern },
-      { "location.street": locationPattern },
-      { "location.city": locationPattern },
-      { "location.state": locationPattern },
-      { "location.Zipcode": locationPattern },
+      { 'location.street': locationPattern },
+      { 'location.city': locationPattern },
+      { 'location.state': locationPattern },
+      { 'location.Zipcode': locationPattern },
     ],
   };
-  if (propertyType !== "All") {
-    const typePattern = new RegExp(propertyType, "i");
+  if (propertyType !== 'All') {
+    const typePattern = new RegExp(propertyType, 'i');
     query.type = typePattern;
   }
   const PropertiesQueryResult = await Property.find(query).lean();
