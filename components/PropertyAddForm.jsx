@@ -37,7 +37,7 @@ export default function PropertyAddForm() {
         <select
           id="type"
           name="type"
-          className="border rounded w-full py-2 px-2"
+          className="border rounded w-full py-2 px-4"
           required
         >
           <option value="Apartment">Apartment</option>
