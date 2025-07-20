@@ -1,6 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
-import logo from "@/assets/images/logo.png";
+import Link from 'next/link';
+import Image from 'next/image';
+import logo from '@/assets/images/logo.png';
 export default function Footer() {
   const current = new Date().getFullYear();
 
@@ -26,7 +26,7 @@ export default function Footer() {
           </div>
           <div>
             <p className="text-sm text-gray-500 mt-2 md:mt-0">
-              &copy; {current} PropertyPulse. All rights reserved.
+              &copy; {current} Arya Property. All rights reserved.
             </p>
           </div>
         </div>

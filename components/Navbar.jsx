@@ -78,7 +78,7 @@ export default function Navbar() {
                   onClick={() => setIsProfileMenuOpen(false)}
                   className="hidden md:block text-white text-2xl font-bold ml-2"
                 >
-                  PropertyPulse
+                  Arya Properties
                 </span>
               </Link>
               {/* <!-- Desktop Menu Hidden below md screens --> */}
